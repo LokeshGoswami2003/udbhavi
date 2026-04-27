@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Builds
+.next/
+dist/
+build/
+coverage/
+
+# Python
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated documents and LaTeX intermediates
+*.pdf
+*.docx
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+
+# Local runtime data
+.local/
+tmp/
