@@ -25,19 +25,31 @@ The most important technical rule is:
 
 > Structured resume JSON is the source of truth. AI may analyze, rewrite, and suggest, but final PDF/DOCX rendering must come from validated structured data and deterministic backend workflows.
 
-## Phase 0 Docs
+## Planning Docs
 
-- [Product Requirements](./product-requirements.md)
-- [Phase Roadmap](./phase-roadmap.md)
-- [Phase 1 Setup](./phase-1-setup.md)
-- [Current Setup Flow](./current-setup-flow.md)
-- [Architecture](./architecture.md)
-- [Auth & Security](./auth-security.md)
-- [Data Model](./data-model.md)
-- [AI Workflows](./ai-workflows.md)
-- [Export & Rendering](./export-rendering.md)
-- [Testing Strategy](./testing-strategy.md)
-- [Logic Review](./logic-review.md)
+- [Product Requirements](./planning/product-requirements.md)
+- [Phase Roadmap](./planning/phase-roadmap.md)
+- [Logic Review](./planning/logic-review.md)
+
+## Architecture Docs
+
+- [Architecture](./architecture/architecture.md)
+- [Auth & Security](./architecture/auth-security.md)
+- [Data Model](./architecture/data-model.md)
+- [AI Workflows](./architecture/ai-workflows.md)
+- [Export & Rendering](./architecture/export-rendering.md)
+- [Testing Strategy](./architecture/testing-strategy.md)
+
+## Setup Docs
+
+- [Phase 1 Setup](./setup/phase-1-setup.md)
+- [Current Setup Flow](./setup/current-setup-flow.md)
+
+## Journey Docs
+
+- [Journey Index](./journey/README.md)
+- [Project Kickoff Entry](./journey/2026-04-27-kickoff.md)
+- [LinkedIn Launch Post](./journey/linkedin-launch-post.md)
 
 ## Source References
 

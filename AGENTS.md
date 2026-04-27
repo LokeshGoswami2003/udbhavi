@@ -84,7 +84,7 @@ For mechanical formatting or import-order issues, use the configured formatter/l
 - Keep `docs/` aligned with the current implementation.
 - Add a setup or decision note when a phase changes how the project runs.
 - Update `README.md` when local commands, dependencies, or service layout change.
-- Update `docs/phase-roadmap.md` when a phase is completed, blocked, or materially re-scoped.
+- Update `docs/planning/phase-roadmap.md` when a phase is completed, blocked, or materially re-scoped.
 - Do not leave decisions only in chat history.
 - If a command cannot be verified due to local environment limitations, document the blocker and the expected command.
 

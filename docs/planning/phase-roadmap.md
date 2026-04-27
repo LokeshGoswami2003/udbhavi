@@ -47,7 +47,7 @@ Acceptance criteria:
 - Backend health endpoint works.
 - Local PostgreSQL starts through `docker compose up -d`.
 - Basic lint/typecheck/test commands pass.
-- Phase setup notes are recorded in [Phase 1 Setup](./phase-1-setup.md).
+- Phase setup notes are recorded in [Phase 1 Setup](../setup/phase-1-setup.md).
 
 Non-goals:
 
