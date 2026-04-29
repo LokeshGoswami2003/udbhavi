@@ -45,6 +45,17 @@ The most important technical rule is:
 - [Phase 1 Setup](./setup/phase-1-setup.md)
 - [Current Setup Flow](./setup/current-setup-flow.md)
 
+## Standards Docs
+
+- [Engineering Standards](./standards/engineering-standards.md)
+- [Agentic Development Pipeline](./standards/agentic-development-pipeline.md)
+
+## Q&A Docs
+
+- [Q&A Index](./qa/README.md)
+- [Pipeline Prep Session](./qa/2026-04-29-pipeline-prep.md)
+- [Session 002](./qa/2026-04-29-session-002.md)
+
 ## Journey Docs
 
 - [Journey Index](./journey/README.md)

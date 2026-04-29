@@ -57,6 +57,15 @@ Its current job in Phase 1:
 
 The frontend talks to the backend later through HTTP APIs. In Phase 1 it does not yet call the backend.
 
+Step flow today:
+
+```text
+npm run dev
+  -> Next.js dev server starts
+  -> serves the Udbhavi landing shell
+  -> future routes will live in the same app
+```
+
 ### Backend
 
 The backend lives in `apps/api` and is a FastAPI app.
@@ -69,6 +78,16 @@ Its current job in Phase 1:
 
 Right now the backend does not yet use the database in code, but it is already shaped for that future.
 
+Step flow today:
+
+```text
+uv run fastapi dev app/main.py
+  -> FastAPI app starts
+  -> registers route modules
+  -> exposes /health
+  -> returns service status JSON
+```
+
 ### Database
 
 The local database is PostgreSQL, defined in the root `docker-compose.yml`.
@@ -79,6 +98,15 @@ Its role:
 - Let the backend connect to a realistic local database without changing architecture later.
 
 The database container is not the backend. It is a separate service that the backend will connect to through `DATABASE_URL`.
+
+Step flow today:
+
+```text
+docker compose up -d
+  -> Docker starts postgres:16
+  -> PostgreSQL listens on port 5432
+  -> backend will later connect through DATABASE_URL
+```
 
 ### Docker
 
@@ -120,6 +148,48 @@ User
   -> Export worker for PDF/DOCX generation
 ```
 
+## Current Local Flow Diagram
+
+```text
+Developer
+  -> apps/web
+     -> npm run dev
+     -> Next.js local dev server
+
+Developer
+  -> apps/api
+     -> uv run fastapi dev app/main.py
+     -> FastAPI local API
+
+Developer
+  -> docker compose up -d
+     -> local PostgreSQL container
+```
+
+## Planned Production Flow Diagram
+
+```text
+User
+  -> Frontend host
+     -> Next.js web app
+        -> API requests
+           -> FastAPI service on ECS Fargate
+              -> RDS PostgreSQL
+              -> S3
+              -> SQS
+
+SQS
+  -> AI worker
+     -> Bedrock
+     -> stores validated results
+
+SQS
+  -> Export worker
+     -> render LaTeX/DOCX
+     -> generate files
+     -> store outputs in S3
+```
+
 ## How AWS Fits In
 
 We are AWS-first, but not AWS-everything-on-day-one locally.
@@ -144,6 +214,14 @@ cd apps/web
 npm run dev
 ```
 
+Frontend compile and checks:
+
+```bash
+cd apps/web
+npm run lint
+npm run typecheck
+```
+
 Backend:
 
 ```bash
@@ -151,10 +229,24 @@ cd apps/api
 uv run fastapi dev app/main.py
 ```
 
+Backend checks:
+
+```bash
+cd apps/api
+uv run pytest
+uv run ruff check .
+```
+
 Database:
 
 ```bash
 docker compose up -d
+```
+
+Database status:
+
+```bash
+docker compose ps
 ```
 
 Health check:

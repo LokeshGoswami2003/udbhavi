@@ -135,6 +135,67 @@ User
 - User uploads and generated outputs are private by default.
 - Model IDs, regions, and provider settings must be configurable.
 
+## Why AI Returns JSON Instead Of LaTeX
+
+The model should return validated structured resume JSON, not final LaTeX as the normal contract.
+
+Why:
+
+- JSON is easier to validate than free-form LaTeX.
+- JSON is easier to diff, version, and partially update.
+- Template switching becomes possible without asking the model to rewrite the whole document format.
+- The same source data can feed PDF, DOCX, previews, ATS analysis, and future editors.
+- LaTeX generated directly by the model is more brittle and harder to debug when formatting breaks.
+
+The correct flow is:
+
+```text
+AI
+  -> structured resume JSON
+  -> backend validation
+  -> deterministic renderer
+  -> LaTeX
+  -> PDF compiler
+```
+
+Direct model-to-LaTeX generation can still be useful as a fallback or repair workflow in narrow cases, but it should not be the primary architecture.
+
+## Database ORM And Migration Strategy
+
+The backend is not using Prisma.
+
+Chosen stack:
+
+- SQLAlchemy for ORM and query modeling.
+- Alembic for schema migrations.
+- PostgreSQL locally and in production.
+
+Why not Prisma:
+
+- Prisma is strongest in Node/TypeScript backends, while this backend is intentionally Python/FastAPI-based.
+- Using Prisma here would add an unnecessary cross-language database toolchain.
+- SQLAlchemy and Alembic are the standard, mature Python choices for FastAPI applications.
+
+Expected migration flow:
+
+```text
+Model change
+  -> create Alembic migration
+  -> review migration SQL
+  -> apply locally
+  -> test
+  -> apply in deployed environments
+```
+
+Typical commands later:
+
+```bash
+alembic revision --autogenerate -m "create users table"
+alembic upgrade head
+```
+
+In this project we will wire those commands through the backend environment and docs when Phase 2 begins.
+
 ## Local Development Strategy
 
 Local development should mirror production concepts without requiring every AWS service immediately:
