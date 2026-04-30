@@ -49,10 +49,10 @@ Deleting the nested `apps/web/.git` folder was the right move. We do not want tw
 
 The frontend lives in `apps/web` and is a Next.js App Router app.
 
-Its current job in Phase 1:
+Its current job in the current Phase 2 state:
 
-- Provide the initial Udbhavi landing shell.
-- Confirm the frontend toolchain works.
+- Provide the design-system foundation for auth and resume-workspace screens.
+- Confirm the frontend toolchain works with lint, typecheck, build, and a minimal smoke test.
 - Establish the place where dashboard, auth, editor, and future product screens will live.
 
 The frontend talks to the backend later through HTTP APIs. In Phase 1 it does not yet call the backend.
@@ -62,21 +62,22 @@ Step flow today:
 ```text
 npm run dev
   -> Next.js dev server starts
-  -> serves the Udbhavi landing shell
-  -> future routes will live in the same app
+  -> serves the Udbhavi marketing/workspace shell
+  -> future auth, dashboard, and resume routes live in the same app
 ```
 
 ### Backend
 
 The backend lives in `apps/api` and is a FastAPI app.
 
-Its current job in Phase 1:
+Its current job in the current Phase 2 state:
 
 - Boot successfully.
-- Expose a health endpoint at `/health`.
-- Establish the module structure for future auth, resumes, AI, files, and jobs.
+- Expose `/health` plus auth routes for signup, login, refresh, logout, and session lookup.
+- Own SQLAlchemy models, Alembic migrations, and protected-route behavior.
+- Establish the module structure for future resumes, AI, files, and jobs.
 
-Right now the backend does not yet use the database in code, but it is already shaped for that future.
+The backend now uses the database contract in code, even though wider resume flows are still pending.
 
 Step flow today:
 
@@ -84,8 +85,9 @@ Step flow today:
 uv run fastapi dev app/main.py
   -> FastAPI app starts
   -> registers route modules
-  -> exposes /health
-  -> returns service status JSON
+  -> exposes /health and /auth/*
+  -> uses SQLAlchemy session dependencies
+  -> returns structured success/error responses
 ```
 
 ### Database
@@ -98,6 +100,17 @@ Its role:
 - Let the backend connect to a realistic local database without changing architecture later.
 
 The database container is not the backend. It is a separate service that the backend will connect to through `DATABASE_URL`.
+
+Schema changes now flow through Alembic. That means the database lifecycle is no longer just "start Postgres"; it is now:
+
+```text
+docker compose up -d
+  -> start PostgreSQL
+alembic upgrade head
+  -> apply the current backend schema
+FastAPI app
+  -> uses the migrated tables for auth and core entities
+```
 
 Step flow today:
 
@@ -220,6 +233,8 @@ Frontend compile and checks:
 cd apps/web
 npm run lint
 npm run typecheck
+npm run test
+npm run build
 ```
 
 Backend:
@@ -235,6 +250,8 @@ Backend checks:
 cd apps/api
 uv run pytest
 uv run ruff check .
+uv run ruff format --check .
+uv run alembic upgrade head
 ```
 
 Database:
@@ -263,13 +280,12 @@ What is working:
 - One root Git repo exists.
 - Next.js app exists.
 - FastAPI app exists.
+- Backend auth and migration flow exist.
 - Backend tests pass.
-- Frontend lint and typecheck pass.
+- Frontend lint, typecheck, smoke test, and production build pass.
 
 What is not built yet:
 
-- Auth.
-- DB models and migrations.
 - Resume CRUD.
 - Uploads.
 - AI workflows.
@@ -280,7 +296,7 @@ What is not built yet:
 What still needs local verification:
 
 - The PostgreSQL container should be started successfully through Docker Compose.
-- The backend will need an actual DB connection test in Phase 2.
+- The backend should be exercised against the real local PostgreSQL container after Docker Hub/DNS access is fixed.
 
 Current Docker blocker:
 

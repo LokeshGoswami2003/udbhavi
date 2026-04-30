@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Udbhavi Web
 
-## Getting Started
+Next.js App Router frontend for the Udbhavi resume workspace.
 
-First, run the development server:
+## Current Direction
+
+The client now has a Phase 2 foundation focused on:
+
+- A shadcn-compatible design system structure.
+- Light and dark theming through `next-themes`.
+- Tokenized Tailwind v4 color variables in `src/app/globals.css`.
+- A SaaS-style landing page with clear product positioning.
+- Functional `/signup`, `/login`, and `/workspace` route flow wired to the backend auth APIs.
+
+## Commands
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run typecheck
+npm run test
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Local Auth Note
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The frontend expects the backend API at:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+http://127.0.0.1:8000
+```
 
-## Learn More
+Override it if needed with:
 
-To learn more about Next.js, take a look at the following resources:
+```text
+NEXT_PUBLIC_API_BASE_URL=...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## UI Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js App Router
+- React 19
+- Tailwind CSS v4
+- `next-themes` for theme switching
+- shadcn-compatible component structure with CVA, `clsx`, and `tailwind-merge`
+- `sonner` for future notifications
 
-## Deploy on Vercel
+## Next Phase Targets
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Progressive onboarding flow after auth
+- Real upload/template entry actions inside the workspace
+- Template selection and version-aware resume editing
+- Job targeting, ATS guidance, and richer resume dashboard flows

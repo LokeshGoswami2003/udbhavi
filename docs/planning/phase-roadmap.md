@@ -60,6 +60,8 @@ Non-goals:
 
 Goal: implement custom auth and persistent core entities.
 
+Status: in progress. Backend auth, JWT session handling, refresh rotation, Alembic migrations, and the first core entities are now implemented locally. The client now also has landing, signup, login, and workspace-entry flow in place, while real onboarding, resume creation flows, and broader product screens remain pending.
+
 Deliverables:
 
 - Email/password signup and login.

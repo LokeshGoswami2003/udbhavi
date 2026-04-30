@@ -14,13 +14,31 @@ uv sync
 uv run fastapi dev app/main.py
 ```
 
-Health endpoint:
+## Schema Management
+
+```bash
+uv run alembic upgrade head
+```
+
+## Current Endpoints
+
+Health:
 
 ```text
 GET http://127.0.0.1:8000/health
 ```
 
-Expected response:
+Auth:
+
+```text
+POST /auth/signup
+POST /auth/login
+POST /auth/refresh
+POST /auth/logout
+GET /auth/me
+```
+
+Example health response:
 
 ```json
 {
@@ -35,4 +53,5 @@ Expected response:
 uv run pytest
 uv run ruff check .
 uv run ruff format --check .
+uv run alembic upgrade head
 ```

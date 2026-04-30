@@ -58,6 +58,8 @@ Run backend checks:
 cd apps/api
 uv run pytest
 uv run ruff check .
+uv run ruff format --check .
+uv run alembic upgrade head
 ```
 
 Run the frontend:
@@ -74,30 +76,30 @@ Run frontend checks:
 cd apps/web
 npm run lint
 npm run typecheck
+npm run test
+npm run build
 ```
 
-## Phase 1 Scope
+## Current Phase Status
 
-Phase 1 creates the local foundation only:
+Phase 1 created the local monorepo foundation:
 
 - Monorepo folder structure.
 - Local PostgreSQL through Docker Compose.
 - Initial FastAPI app with `/health`.
 - Initial Next.js app shell.
 
-Phase 1 does not include auth, AI workflows, resume editing, AWS provisioning, or document generation.
+Phase 2 is now in progress and has started implementing:
 
-## Current Phase 1 Status
+- Email/password auth routes.
+- JWT access tokens and refresh rotation.
+- SQLAlchemy models and Alembic migrations for the first core entities.
+- A shadcn-compatible, dual-theme frontend foundation.
+- SaaS-style landing, signup, login, and workspace-entry routes on the client.
 
-Created:
+Still pending inside Phase 2 and later phases:
 
-- Monorepo folder structure.
-- Root `AGENTS.md`, `.gitignore`, `docker-compose.yml`, and `README.md`.
-- Initial FastAPI backend in `apps/api`.
-- Initial Next.js frontend in `apps/web`.
-- Placeholder worker, shared package, infra, and scripts folders.
-
-Known local setup note:
-
-- Docker is installed and reachable, but the PostgreSQL image pull is currently blocked because Docker Desktop cannot resolve `registry-1.docker.io`.
-- `uv` was installed for the current user. A new terminal may be needed before the `uv` command is available on `PATH`.
+- Real onboarding screens after auth.
+- Resume CRUD and version authoring flows.
+- Uploads, AI workflows, job targeting, and exports.
+- Real PostgreSQL runtime verification once Docker Desktop can pull images again.
