@@ -29,10 +29,10 @@ export const systemPillars = [
 ];
 
 export const phaseTwoBacklog = [
-  "Create an account in under a minute",
-  "Complete lightweight onboarding",
-  "Choose upload or template start",
-  "Move into the resume workspace",
+  "Project foundation and local app contracts are documented",
+  "Email/password auth and session rotation are implemented",
+  "Neon PostgreSQL is configured for local development",
+  "The post-auth workspace handoff is ready for onboarding",
 ];
 
 export const workspaceSignals = [

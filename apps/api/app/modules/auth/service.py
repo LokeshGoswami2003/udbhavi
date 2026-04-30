@@ -48,6 +48,7 @@ class AuthService:
             )
 
         user = self.repository.create_user(payload.email, hash_password(payload.password))
+        self.session.flush()
         self.repository.create_profile(user.id)
         tokens = self._issue_tokens(user)
         self.session.commit()

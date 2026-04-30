@@ -24,7 +24,7 @@ export function AuthPageShell({
     <main className="min-h-screen bg-background">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-6 sm:py-8">
         <header className="flex items-center justify-between">
-          <Link className="flex items-center gap-3 text-sm font-semibold tracking-[0.22em]" href="/">
+          <Link className="flex items-center gap-3 text-sm font-semibold" href="/">
             <span className="flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
               U
             </span>
@@ -48,7 +48,7 @@ export function AuthPageShell({
               </div>
 
               <div className="space-y-3">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                <p className="text-sm font-semibold uppercase text-muted-foreground">
                   Why this flow exists
                 </p>
                 <AuthBenefitList />

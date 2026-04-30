@@ -75,7 +75,7 @@ Its current job in the current Phase 2 state:
 Step flow today:
 
 ```text
-uv run fastapi dev app/main.py
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
   -> FastAPI app starts
   -> registers route modules
   -> exposes /health and /auth/*
@@ -139,7 +139,7 @@ Developer
 
 Developer
   -> apps/api
-     -> uv run fastapi dev app/main.py
+     -> .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
      -> FastAPI local API
 
 Developer
@@ -216,8 +216,18 @@ Backend:
 ```bash
 cd apps/api
 copy .env.example .env
-uv run fastapi dev app/main.py
+.\.venv\Scripts\python.exe -m alembic upgrade head
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
+
+The `.venv\Scripts\python.exe` command is the current safest Windows local
+command because it does not depend on global Python or `uv` being available on
+`PATH`. Avoid plain `python -m uvicorn` unless the virtual environment is
+already activated, because global `C:\Python313\python.exe` may not have
+`uvicorn` installed. If `uv` is available in the terminal, `uv run uvicorn
+app.main:app --reload --host 127.0.0.1 --port 8000` is also valid. The FastAPI
+CLI can fail in some Windows terminals because its startup banner contains
+Unicode characters that are not supported by the terminal code page.
 
 Backend checks:
 
@@ -226,7 +236,7 @@ cd apps/api
 uv run pytest
 uv run ruff check .
 uv run ruff format --check .
-uv run alembic upgrade head
+.\.venv\Scripts\python.exe -m alembic upgrade head
 ```
 
 Database migration:
@@ -255,6 +265,7 @@ What is working:
 - Frontend lint, typecheck, auth tests, and production build pass.
 - Local frontend port is fixed at `3000`.
 - Local backend config targets Neon PostgreSQL.
+- Fresh signup through the correctly restarted API writes users, profiles, and refresh tokens into Neon.
 
 What is not built yet:
 
@@ -265,6 +276,9 @@ What is not built yet:
 - SQS integration.
 - PDF/DOCX generation.
 
-What still needs local verification:
+Neon visibility checklist:
 
-- The backend should be exercised against the configured Neon database after local credentials are in place.
+- Clear the browser session or sign out before testing a new signup.
+- Confirm `http://127.0.0.1:8000/health` is served by the current `apps/api` process.
+- Run `.\.venv\Scripts\python.exe -m alembic upgrade head` before the API if tables are missing.
+- Remember that backend tests use temporary SQLite and do not create Neon rows.

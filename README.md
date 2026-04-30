@@ -43,11 +43,19 @@ Run the backend:
 
 ```bash
 cd apps/api
-uv sync
-uv run fastapi dev app/main.py
+.\.venv\Scripts\python.exe -m alembic upgrade head
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-If `uv` is not recognized on Windows after installation, open a new terminal or add this directory to `PATH`:
+If `uv` is available in your terminal, you can also run:
+
+```bash
+uv sync
+uv run alembic upgrade head
+uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+If `uv` is not recognized on Windows after installation, use the `.venv` commands above or add this directory to `PATH`:
 
 ```text
 C:\Users\Arcstream\AppData\Roaming\Python\Python313\Scripts
@@ -68,6 +76,8 @@ Database note:
 - Local development now uses a Neon PostgreSQL connection string through `apps/api/.env`.
 - For SQLAlchemy, use the `postgresql+psycopg://...` form of the Neon URL.
 - Keep `sslmode=require&channel_binding=require` on the connection string.
+- Backend tests use temporary SQLite databases; only the running local API writes signup data to Neon.
+- If Neon still shows empty tables after a signup, restart the API process on port `8000` and test with a fresh account after clearing the browser session.
 
 Run the frontend:
 
@@ -105,6 +115,7 @@ Phase 2 is complete for the auth foundation:
 - SQLAlchemy models and Alembic migrations for the first core entities.
 - A shadcn-compatible, dual-theme frontend foundation.
 - SaaS-style landing, signup, login, and workspace-entry routes on the client.
+- A fitted first-viewport landing layout with clearer progress and product-principle sections.
 
 Still pending in later phases:
 

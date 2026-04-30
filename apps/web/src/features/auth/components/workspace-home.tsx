@@ -46,7 +46,7 @@ export function WorkspaceHome() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-6 sm:py-8">
         <header className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold tracking-[0.22em] text-muted-foreground">
+            <p className="text-sm font-semibold text-muted-foreground">
               UDBHAVI WORKSPACE
             </p>
             <h1 className="mt-2 text-3xl font-semibold">
@@ -79,7 +79,7 @@ export function WorkspaceHome() {
               </p>
               <div className="grid gap-4 rounded-[1.5rem] border border-border/70 bg-background/70 p-5 sm:grid-cols-2">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  <p className="text-sm font-semibold uppercase text-muted-foreground">
                     Account
                   </p>
                   <p className="mt-3 text-base font-semibold break-all">
@@ -87,7 +87,7 @@ export function WorkspaceHome() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  <p className="text-sm font-semibold uppercase text-muted-foreground">
                     Onboarding status
                   </p>
                   <p className="mt-3 text-base font-semibold capitalize">

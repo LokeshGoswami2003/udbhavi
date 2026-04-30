@@ -30,3 +30,5 @@ YYYY-MM-DD-session-001.md
 - [2026-04-29 Session 001](./2026-04-29-pipeline-prep.md)
 - [2026-04-29 Session 002](./2026-04-29-session-002.md)
 - [2026-04-30 Session 005](./2026-04-30-session-005.md)
+- [2026-04-30 Session 006](./2026-04-30-session-006.md)
+- [2026-04-30 Session 007](./2026-04-30-session-007.md)

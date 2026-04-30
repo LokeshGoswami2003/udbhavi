@@ -11,10 +11,10 @@ const navItems = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-20 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-6 py-4">
-        <Link className="flex items-center gap-3 text-sm font-semibold tracking-[0.22em]" href="/">
-          <span className="flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+    <header className="sticky top-0 z-20 border-b border-border/60 bg-background/88 backdrop-blur-xl">
+      <div className="mx-auto flex h-[4.5rem] w-full max-w-7xl items-center justify-between gap-4 px-5 sm:px-6">
+        <Link className="flex items-center gap-3 text-sm font-semibold" href="/">
+          <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
             U
           </span>
           UDBHAVI

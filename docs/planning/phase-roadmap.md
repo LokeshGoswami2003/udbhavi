@@ -60,7 +60,7 @@ Non-goals:
 
 Goal: implement custom auth and persistent core entities.
 
-Status: completed. Backend auth, JWT session handling, refresh rotation, Alembic migrations, and the first core entities are implemented locally. The client also has landing, signup, login, and a focused workspace-entry flow in place.
+Status: completed. Backend auth, JWT session handling, refresh rotation, Alembic migrations, and the first core entities are implemented locally. The client also has landing, signup, login, and a focused workspace-entry flow in place. The final Phase 2 UI pass tightened the first viewport, removed stale stacked preview content, and documented current progress before Phase 3 starts. A clean API restart and fresh signup smoke test verified that users, profiles, and refresh tokens are written into the configured Neon database.
 
 Deliverables:
 
@@ -76,6 +76,8 @@ Acceptance criteria:
 - User can sign up, sign in, refresh, and log out.
 - Protected routes reject missing/invalid tokens.
 - Auth tests cover common failure cases.
+- The landing/auth screens fit common desktop and mobile viewports without loose, mismatched container sections.
+- Fresh local signup through the API creates persistent rows in Neon-backed `users`, `profiles`, and `refresh_tokens`.
 
 Non-goals:
 

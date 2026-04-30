@@ -4,10 +4,12 @@ import path from "node:path";
 
 const rootDir = path.resolve(import.meta.dirname, "..");
 
-const [packageJsonSource, envExample, authContentSource] = await Promise.all([
+const [packageJsonSource, envExample, authContentSource, homePageSource, homeContentSource] = await Promise.all([
   readFile(path.join(rootDir, "package.json"), "utf8"),
   readFile(path.join(rootDir, ".env.example"), "utf8"),
   readFile(path.join(rootDir, "src/features/auth/content.ts"), "utf8"),
+  readFile(path.join(rootDir, "src/app/page.tsx"), "utf8"),
+  readFile(path.join(rootDir, "src/features/home/content.ts"), "utf8"),
 ]);
 
 const packageJson = JSON.parse(packageJsonSource);
@@ -22,5 +24,8 @@ assert.match(authContentSource, /Every screen leads forward/);
 assert.match(authContentSource, /status: "Now"/);
 assert.match(authContentSource, /status: "Next"/);
 assert.match(authContentSource, /status: "Later"/);
+assert.match(homePageSource, /min-h-\[calc\(100svh-4\.5rem\)\]/);
+assert.doesNotMatch(homePageSource, /WorkspacePreview/);
+assert.match(homeContentSource, /The post-auth workspace handoff is ready for onboarding/);
 
-console.log("10 auth-flow checks passed");
+console.log("13 auth-flow checks passed");
