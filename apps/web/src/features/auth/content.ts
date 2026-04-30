@@ -1,23 +1,38 @@
 export const authBenefits = [
-  "Create a reusable career profile instead of starting from a blank page every time.",
-  "Keep resume versions separate as you tailor for internships, backend roles, or senior openings.",
-  "Move into a guided onboarding flow right after auth, without overwhelming the first screen.",
+  {
+    title: "Resume data stays reusable",
+    description:
+      "Your profile becomes the structured base for every resume version instead of starting from scratch.",
+  },
+  {
+    title: "The first session stays focused",
+    description:
+      "We collect role target, market, and skill context only when it helps the next step.",
+  },
+  {
+    title: "Every screen leads forward",
+    description:
+      "Auth should hand you straight into setup, then into resume creation and tailoring without filler pages.",
+  },
 ];
 
-export const workspaceActions = [
-  {
-    title: "Upload your current resume",
-    description:
-      "Bring in an existing PDF or DOCX and turn it into editable structured data.",
-  },
-  {
-    title: "Start from a software-focused template",
-    description:
-      "Pick a template designed for software hiring and fill missing details progressively.",
-  },
+export const workspaceMilestones = [
   {
     title: "Complete your quick profile",
     description:
-      "Set target role, experience level, job market, skills, and career goal for better AI suggestions.",
+      "Add role target, experience level, market, and core skills so later suggestions stay relevant.",
+    status: "Now",
+  },
+  {
+    title: "Choose your starting path",
+    description:
+      "Upload an existing resume or begin from a software-focused template once your context is saved.",
+    status: "Next",
+  },
+  {
+    title: "Move into structured editing",
+    description:
+      "Keep future AI edits, targeting, and exports anchored to validated resume data.",
+    status: "Later",
   },
 ];

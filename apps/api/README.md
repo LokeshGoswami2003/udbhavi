@@ -6,6 +6,7 @@ FastAPI backend for Udbhavi.
 
 ```bash
 uv sync
+copy .env.example .env
 ```
 
 ## Run
@@ -55,3 +56,9 @@ uv run ruff check .
 uv run ruff format --check .
 uv run alembic upgrade head
 ```
+
+## Local Database Contract
+
+- Local development uses Neon PostgreSQL through `DATABASE_URL`.
+- Use SQLAlchemy's `postgresql+psycopg://` scheme instead of the raw `postgresql://` form.
+- Keep the Neon SSL settings enabled in the connection string.

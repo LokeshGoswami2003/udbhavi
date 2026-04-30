@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3000",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node scripts/run-tests.mjs"
+    "test": "node tests/auth-flow.test.mjs"
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.8",

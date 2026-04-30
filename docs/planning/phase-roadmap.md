@@ -31,13 +31,13 @@ Non-goals:
 
 Goal: create a clean monorepo and local development base.
 
-Status: in progress. The monorepo skeleton, root files, initial FastAPI app, and initial Next.js app have been created. Docker Compose PostgreSQL is configured, but local verification requires Docker Desktop/service to be running.
+Status: completed. The monorepo skeleton, root files, initial FastAPI app, and initial Next.js app are in place. Local development is now locked to web port 3000 plus a Neon PostgreSQL connection instead of Docker-based Postgres.
 
 Deliverables:
 
-- Root project files: `README.md`, `AGENTS.md`, `.gitignore`, `docker-compose.yml`.
+- Root project files: `README.md`, `AGENTS.md`, `.gitignore`.
 - Folder structure: `apps/web`, `apps/api`, `workers/ai-worker`, `workers/latex-worker`, `packages/shared`, `infra`, `docs`, `scripts`.
-- Local PostgreSQL through Docker Compose.
+- Local Neon PostgreSQL configuration for the backend.
 - Initial Next.js app.
 - Initial FastAPI app with `/health`.
 
@@ -45,7 +45,7 @@ Acceptance criteria:
 
 - Frontend dev server starts.
 - Backend health endpoint works.
-- Local PostgreSQL starts through `docker compose up -d`.
+- Backend connects successfully with a configured Neon `DATABASE_URL`.
 - Basic lint/typecheck/test commands pass.
 - Phase setup notes are recorded in [Phase 1 Setup](../setup/phase-1-setup.md).
 
@@ -60,7 +60,7 @@ Non-goals:
 
 Goal: implement custom auth and persistent core entities.
 
-Status: in progress. Backend auth, JWT session handling, refresh rotation, Alembic migrations, and the first core entities are now implemented locally. The client now also has landing, signup, login, and workspace-entry flow in place, while real onboarding, resume creation flows, and broader product screens remain pending.
+Status: completed. Backend auth, JWT session handling, refresh rotation, Alembic migrations, and the first core entities are implemented locally. The client also has landing, signup, login, and a focused workspace-entry flow in place.
 
 Deliverables:
 

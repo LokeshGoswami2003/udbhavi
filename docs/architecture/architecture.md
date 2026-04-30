@@ -200,7 +200,7 @@ In this project we will wire those commands through the backend environment and 
 
 Local development should mirror production concepts without requiring every AWS service immediately:
 
-- Local PostgreSQL through Docker Compose.
+- Local Neon PostgreSQL connection for the API runtime.
 - Local filesystem or local S3-compatible substitute for early file development if needed.
 - Local fake queue or direct worker execution before SQS is wired.
 - Environment variables shaped like production settings from the beginning.

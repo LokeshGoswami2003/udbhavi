@@ -7,10 +7,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_name: str = "Udbhavi API"
     environment: str = "local"
-    database_url: str = "postgresql+psycopg://udbhavi:udbhavi@localhost:5432/udbhavi_dev"
-    cors_origins: str = (
-        "http://localhost:3000,http://127.0.0.1:3000,http://localhost:3002,http://127.0.0.1:3002"
+    database_url: str = (
+        "postgresql+psycopg://neondb_owner:replace-me@your-neon-host/neondb"
+        "?sslmode=require&channel_binding=require"
     )
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
     auth_secret_key: str = Field(
         default="change-me-local-secret-key-please",
         min_length=24,

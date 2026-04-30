@@ -6,7 +6,7 @@ Udbhavi is an AI-powered resume-building SaaS for IT and software professionals.
 
 - Frontend: Next.js, React, TypeScript, Tailwind CSS.
 - Backend: FastAPI, Python, Pydantic, SQLAlchemy, Alembic.
-- Database: PostgreSQL locally, AWS RDS PostgreSQL in production.
+- Database: Neon-hosted PostgreSQL for local development, AWS RDS PostgreSQL in production.
 - Storage: AWS S3 for uploads and generated files.
 - Queue: AWS SQS for AI and export jobs.
 - AI: Amazon Bedrock, with Claude Sonnet configured through environment settings.
@@ -24,7 +24,7 @@ workers/
 packages/
   shared/           # Shared schemas/types later
 infra/
-  docker/           # Local Docker support
+  docker/           # Future export/runtime container support
   aws/              # AWS infrastructure notes/config later
 docs/               # Product and architecture docs
 scripts/            # Project scripts
@@ -32,10 +32,11 @@ scripts/            # Project scripts
 
 ## Local Setup
 
-Start PostgreSQL:
+Prepare the backend environment:
 
 ```bash
-docker compose up -d
+cd apps/api
+copy .env.example .env
 ```
 
 Run the backend:
@@ -62,6 +63,12 @@ uv run ruff format --check .
 uv run alembic upgrade head
 ```
 
+Database note:
+
+- Local development now uses a Neon PostgreSQL connection string through `apps/api/.env`.
+- For SQLAlchemy, use the `postgresql+psycopg://...` form of the Neon URL.
+- Keep `sslmode=require&channel_binding=require` on the connection string.
+
 Run the frontend:
 
 ```bash
@@ -69,6 +76,8 @@ cd apps/web
 npm install
 npm run dev
 ```
+
+The web app is pinned to `http://localhost:3000` for local development.
 
 Run frontend checks:
 
@@ -85,11 +94,11 @@ npm run build
 Phase 1 created the local monorepo foundation:
 
 - Monorepo folder structure.
-- Local PostgreSQL through Docker Compose.
+- Local Neon-backed PostgreSQL configuration.
 - Initial FastAPI app with `/health`.
 - Initial Next.js app shell.
 
-Phase 2 is now in progress and has started implementing:
+Phase 2 is complete for the auth foundation:
 
 - Email/password auth routes.
 - JWT access tokens and refresh rotation.
@@ -97,9 +106,9 @@ Phase 2 is now in progress and has started implementing:
 - A shadcn-compatible, dual-theme frontend foundation.
 - SaaS-style landing, signup, login, and workspace-entry routes on the client.
 
-Still pending inside Phase 2 and later phases:
+Still pending in later phases:
 
 - Real onboarding screens after auth.
 - Resume CRUD and version authoring flows.
 - Uploads, AI workflows, job targeting, and exports.
-- Real PostgreSQL runtime verification once Docker Desktop can pull images again.
+- Full resume-creation flow after the workspace handoff.

@@ -7,7 +7,6 @@ Root project files:
 - `README.md`
 - `AGENTS.md`
 - `.gitignore`
-- `docker-compose.yml`
 
 Monorepo folders:
 
@@ -26,9 +25,9 @@ Backend foundation:
 - FastAPI app in `apps/api`.
 - Modular health route at `/health`.
 - Pydantic settings in `app/core/config.py`.
-- Pytest health test.
+- Pytest health and auth tests.
 - Ruff config.
-- `.env.example` with AWS-shaped local settings.
+- `.env.example` with Neon-ready local settings.
 
 Frontend foundation:
 
@@ -36,12 +35,12 @@ Frontend foundation:
 - TypeScript.
 - Tailwind CSS.
 - ESLint.
-- Udbhavi landing shell.
-- Scripts for `dev`, `build`, `start`, `lint`, and `typecheck`.
+- Local auth/workspace smoke coverage.
+- Scripts for `dev`, `build`, `start`, `lint`, `typecheck`, and `test`.
 
 Infrastructure foundation:
 
-- Local PostgreSQL defined in root `docker-compose.yml`.
+- Local Neon PostgreSQL configuration through `apps/api/.env`.
 - Placeholder directories for future Docker and AWS infrastructure.
 - One root Git repository for the whole monorepo.
 
@@ -52,6 +51,7 @@ Backend:
 ```bash
 cd apps/api
 uv sync
+copy .env.example .env
 uv run pytest
 uv run ruff check .
 uv run fastapi dev app/main.py
@@ -72,37 +72,35 @@ cd apps/web
 npm install
 npm run lint
 npm run typecheck
+npm run test
 npm run dev
+```
+
+Local frontend URL:
+
+```text
+http://localhost:3000
 ```
 
 Database:
 
-```bash
-docker compose up -d
-```
+- Local API development uses a Neon PostgreSQL connection string in `apps/api/.env`.
+- The SQLAlchemy connection should use `postgresql+psycopg://...`.
+- Keep `sslmode=require&channel_binding=require` in the URL.
 
 ## Verification Results
 
 Passed:
 
-- Backend health test: `pytest`.
+- Backend health and auth tests: `pytest`.
 - Backend lint after formatter/import-sort fix: `ruff check`.
 - Frontend lint: `npm run lint`.
 - Frontend typecheck: `npm run typecheck`.
+- Frontend auth-contract tests: `npm run test`.
 
 Warning:
 
-- Pytest passed, but this session could not write `.pytest_cache` due to a Windows access warning. This does not block the test result.
-
-Blocked locally:
-
-- Docker is now reachable from the terminal, but PostgreSQL has not started yet because Docker Desktop could not pull `postgres:16`.
-- The exact error is DNS/network related inside Docker Desktop: it could not resolve `registry-1.docker.io`.
-
-Expected fix:
-
-- Fix Docker Desktop network/DNS access to Docker Hub.
-- Rerun `docker compose up -d` from the repo root and confirm the `postgres` service becomes healthy.
+- Pytest may still warn if `.pytest_cache` is not writable on this Windows setup. That does not invalidate the test results.
 
 ## Decisions Made
 
@@ -111,13 +109,14 @@ Expected fix:
 - `uv` is the backend package manager. It was installed into the user Python scripts directory during setup.
 - Mechanical import-order issues should be fixed with the configured formatter/linter once, then rechecked, instead of manually guessing import order.
 - The monorepo uses one root Git repository only. Nested app-level `.git` folders are not part of the intended setup.
+- Local development uses Neon PostgreSQL instead of Docker Compose Postgres.
+- The web app is explicitly pinned to port `3000` for local use.
 
 ## Non-Goals Confirmed
 
 Phase 1 does not implement:
 
-- Authentication.
-- Database models.
+- Authentication beyond the now-complete foundation wiring.
 - Resume upload.
 - AI workflows.
 - PDF/DOCX rendering.

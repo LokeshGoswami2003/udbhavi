@@ -4,8 +4,8 @@ import { AuthPageShell } from "@/features/auth/components/auth-page-shell";
 export default function LoginPage() {
   return (
     <AuthPageShell
-      badge="You only need email and password to enter. We will collect role, market, and skill context inside the workspace."
-      description="Sign in to continue building resume versions, refining content with AI help, and tailoring for the roles you are applying to."
+      badge="Email and password are enough to get in. The rest of your resume context is collected inside the guided setup, not dumped on you here."
+      description="Sign in to continue your structured resume workspace and move straight into the next meaningful setup step."
       eyebrow="Sign in"
       title="Return to your resume workspace"
     >

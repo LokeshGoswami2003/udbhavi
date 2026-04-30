@@ -2,7 +2,7 @@
 
 ## What We Have Right Now
 
-The project is set up as a monorepo. That means the whole product lives in one repository and is versioned together under a single root Git repository.
+The project is set up as a monorepo. The whole product lives in one repository and is versioned together under a single root Git repository.
 
 Current layout:
 
@@ -18,7 +18,7 @@ udbhavi/
   packages/
     shared/             # future shared schemas/types
   infra/
-    docker/             # future Docker-specific files
+    docker/             # future Docker/export infrastructure files
     aws/                # future AWS-specific files
   docs/
   scripts/
@@ -41,8 +41,6 @@ Why one Git repo is better here:
 - Shared refactors are easier.
 - Phase docs and implementation stay in sync.
 
-Deleting the nested `apps/web/.git` folder was the right move. We do not want two separate Git histories for this monorepo.
-
 ## How The Flow Works Today
 
 ### Frontend
@@ -52,18 +50,15 @@ The frontend lives in `apps/web` and is a Next.js App Router app.
 Its current job in the current Phase 2 state:
 
 - Provide the design-system foundation for auth and resume-workspace screens.
-- Confirm the frontend toolchain works with lint, typecheck, build, and a minimal smoke test.
-- Establish the place where dashboard, auth, editor, and future product screens will live.
-
-The frontend talks to the backend later through HTTP APIs. In Phase 1 it does not yet call the backend.
+- Confirm the frontend toolchain works with lint, typecheck, build, and focused auth tests.
+- Establish the place where onboarding, dashboard, editor, and future product screens will live.
 
 Step flow today:
 
 ```text
 npm run dev
-  -> Next.js dev server starts
-  -> serves the Udbhavi marketing/workspace shell
-  -> future auth, dashboard, and resume routes live in the same app
+  -> Next.js dev server starts on localhost:3000
+  -> serves the Udbhavi landing, auth, and workspace-entry routes
 ```
 
 ### Backend
@@ -76,8 +71,6 @@ Its current job in the current Phase 2 state:
 - Expose `/health` plus auth routes for signup, login, refresh, logout, and session lookup.
 - Own SQLAlchemy models, Alembic migrations, and protected-route behavior.
 - Establish the module structure for future resumes, AI, files, and jobs.
-
-The backend now uses the database contract in code, even though wider resume flows are still pending.
 
 Step flow today:
 
@@ -92,59 +85,34 @@ uv run fastapi dev app/main.py
 
 ### Database
 
-The local database is PostgreSQL, defined in the root `docker-compose.yml`.
+The local database contract is PostgreSQL through Neon.
 
 Its role:
 
 - Provide the same database engine locally that we plan to use in AWS through RDS PostgreSQL.
-- Let the backend connect to a realistic local database without changing architecture later.
+- Let the backend connect to a managed, TLS-backed Postgres instance without maintaining a local container.
 
-The database container is not the backend. It is a separate service that the backend will connect to through `DATABASE_URL`.
+The database is not embedded in the backend. The API connects to Neon through `DATABASE_URL`.
 
-Schema changes now flow through Alembic. That means the database lifecycle is no longer just "start Postgres"; it is now:
+Schema changes now flow through Alembic. The database lifecycle is:
 
 ```text
-docker compose up -d
-  -> start PostgreSQL
+copy .env.example .env
+  -> set Neon DATABASE_URL
 alembic upgrade head
   -> apply the current backend schema
 FastAPI app
   -> uses the migrated tables for auth and core entities
 ```
 
-Step flow today:
-
-```text
-docker compose up -d
-  -> Docker starts postgres:16
-  -> PostgreSQL listens on port 5432
-  -> backend will later connect through DATABASE_URL
-```
-
 ### Docker
 
-Docker is being used for local infrastructure, not for the frontend or backend runtime yet.
+Docker is no longer part of the default local database path.
 
-What Docker is doing in Phase 1:
+What Docker is still reserved for:
 
-- Running PostgreSQL in a container.
-- Giving us a clean, repeatable local database setup.
-- Keeping local infrastructure separate from the app code.
-
-Why this helps:
-
-- We do not need to install PostgreSQL directly on Windows.
-- The local DB can be started and stopped predictably.
-- Later, more services can be containerized if needed.
-
-Current Docker flow:
-
-```text
-docker compose up -d
-  -> starts postgres container
-  -> exposes port 5432 locally
-  -> backend uses DATABASE_URL to connect
-```
+- Future export-worker PDF compilation.
+- Any later infra experiments that benefit from container isolation.
 
 ## How The Full Product Flow Will Grow
 
@@ -167,7 +135,7 @@ User
 Developer
   -> apps/web
      -> npm run dev
-     -> Next.js local dev server
+     -> Next.js local dev server on port 3000
 
 Developer
   -> apps/api
@@ -175,8 +143,8 @@ Developer
      -> FastAPI local API
 
 Developer
-  -> docker compose up -d
-     -> local PostgreSQL container
+  -> apps/api/.env
+     -> Neon PostgreSQL connection
 ```
 
 ## Planned Production Flow Diagram
@@ -209,13 +177,13 @@ We are AWS-first, but not AWS-everything-on-day-one locally.
 
 That means:
 
-- Local PostgreSQL mirrors future RDS PostgreSQL.
+- Local Neon PostgreSQL mirrors the same Postgres behavior we expect from RDS.
 - Local env vars are shaped like future AWS config.
 - S3, SQS, Bedrock, and ECS are planned in architecture, even if not yet wired in code.
 
 Current intention:
 
-- Local dev uses Docker Postgres and app processes.
+- Local dev uses Neon Postgres and app processes.
 - Production will use RDS, S3, SQS, ECS Fargate, CloudWatch, Secrets Manager, and Bedrock.
 
 ## Current Command Flow
@@ -225,6 +193,12 @@ Frontend:
 ```bash
 cd apps/web
 npm run dev
+```
+
+Local URL:
+
+```text
+http://localhost:3000
 ```
 
 Frontend compile and checks:
@@ -241,6 +215,7 @@ Backend:
 
 ```bash
 cd apps/api
+copy .env.example .env
 uv run fastapi dev app/main.py
 ```
 
@@ -254,16 +229,11 @@ uv run ruff format --check .
 uv run alembic upgrade head
 ```
 
-Database:
+Database migration:
 
 ```bash
-docker compose up -d
-```
-
-Database status:
-
-```bash
-docker compose ps
+cd apps/api
+uv run alembic upgrade head
 ```
 
 Health check:
@@ -282,7 +252,9 @@ What is working:
 - FastAPI app exists.
 - Backend auth and migration flow exist.
 - Backend tests pass.
-- Frontend lint, typecheck, smoke test, and production build pass.
+- Frontend lint, typecheck, auth tests, and production build pass.
+- Local frontend port is fixed at `3000`.
+- Local backend config targets Neon PostgreSQL.
 
 What is not built yet:
 
@@ -295,10 +267,4 @@ What is not built yet:
 
 What still needs local verification:
 
-- The PostgreSQL container should be started successfully through Docker Compose.
-- The backend should be exercised against the real local PostgreSQL container after Docker Hub/DNS access is fixed.
-
-Current Docker blocker:
-
-- Docker Desktop is reachable, but the `postgres:16` image pull is failing because Docker cannot resolve `registry-1.docker.io`.
-- This is an environment/network issue in Docker Desktop, not a monorepo or app-structure issue.
+- The backend should be exercised against the configured Neon database after local credentials are in place.

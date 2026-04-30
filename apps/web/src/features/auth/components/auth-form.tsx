@@ -146,6 +146,9 @@ export function AuthForm({ mode }: { mode: AuthFormMode }) {
               type="password"
               value={formState.password}
             />
+            <p className="text-xs leading-6 text-muted-foreground">
+              Use at least 8 characters.
+            </p>
           </div>
 
           {errorMessage ? (
